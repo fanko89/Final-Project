@@ -5,16 +5,17 @@
 
 </script>
 
-<main><form class="ui form">
+<main>
+	<form class="uiForm">
 
 
 
 			
-	<div id="page-wrap">
+	<div>
   
 		  <textarea class="header">INVOICE</textarea>
 		  
-		  <div id="info">
+		  <div class="info">
 			<p><strong>155, UT 84443 | (801) 123 1234 | Fax: (801) 123 1234| website.com | office@website.com</strong></p></div>    
 		  
 			<div class="logo">
@@ -58,13 +59,13 @@
 				  </tr>
 			  </table>
 		</div>
-	  <table width="100%" id="items"> 
+	  <table id="items"> 
 			<tr>
-				<th width="50">Employee</th>
-				<th width="219">Description/Material</th>
-				<th width="46">Cost</th>
-				<th width="46">Hours</th>
-				<th width="46">Price</th>
+				<th class="itemName">Item</th>
+				<th class="desc">Description/Material</th>
+				<th class="cost">Cost</th>
+				<th class="hours">Hours</th>
+				<th  class="price">Price</th>
 			</tr>
 			
 		   <tr class="item-row">
@@ -162,23 +163,5 @@
 </main>
 
 <style>
-	main {
-		text-align: center;
-		padding: 1em;
-		max-width: 240px;
-		margin: 0 auto;
-	}
-
-	h1 {
-		color: #ff3e00;
-		text-transform: uppercase;
-		font-size: 4em;
-		font-weight: 100;
-	}
-
-	@media (min-width: 640px) {
-		main {
-			max-width: none;
-		}
-	}
+	
 </style>

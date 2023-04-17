@@ -2,29 +2,67 @@
 	export let date;
 	import './lib/styles/styles.css';
 
+const rowNumber = 0;
+
+	function getCurrentDate() {
+	const today = new Date();
+	const dd = String(today.getDate()).padStart(2, '0');
+	const mm = String(today.getMonth() + 1).padStart(2, '0');
+	const yyyy = today.getFullYear();
+	return mm + '/' + dd + '/' + yyyy;
+  }
+
+  function deleteRow(rowId) {
+
+	if (rowId === 1) {
+	  // If there is only one row, reset the row to the default values
+	  yourData[0] = { description: '', amount: 0, paid: 0 };
+	// Remove the row from the array
+	yourData.splice(rowId, 1);
+	// Recalculate the total and amount due
+	updateTotalAndAmountDue();
+}
+else{
+return
+}
+
+  }
+
+  function addRow(newRow){
+	// Add the new row to the array
+	yourData.push(newRow)
+	// Recalculate the total and amount due
+	updateTotalAndAmountDue()
+  }
+
+  function updateTotalAndAmountDue(){
+	let total = 0
+	let amountDue = 0
+	yourData.forEach((row) => {
+	  total += row.amount
+	  amountDue += row.amount - row.paid
+	})
+	yourTotal = total
+	yourAmountDue = amountDue
+  }
+
+
 
 </script>
 
-<main>
-	<form class="uiForm">
+<main><form class="ui form">
 
 
 
 			
-	<div>
-  
-		  <textarea class="header">INVOICE</textarea>
-		  
-		  <div class="info">
-			<p><strong>155, UT 84443 | (801) 123 1234 | Fax: (801) 123 1234| website.com | office@website.com</strong></p></div>    
-		  
+	<div id="pdfWrap">
+		  <textarea id="header">INVOICE</textarea>
+		  <div id="info">
+			<p><strong>155, UT 84443 | (801) 123 1234 | Fax: (801) 123 1234| website.com | office@website.com</strong></p>
+		</div> 		  
 			<div class="logo">
 				<img id="image" src="/img/logo.png" alt="logo" />
 			  </div>
-		  
-	   
-		  
-	
 		  <div id="identity">
 		  
 		  <h3>Customers Info:</h3>
@@ -34,44 +72,44 @@
 		<input type="text" textarea id="region" placeholder="City, State Zip" />
 		<input type="text" textarea id="phone" placeholder="Phone Number" />
 		<input type="text" textarea id="email" placeholder="Email Address" />
-	</div> 
-	      
-  
+	</div>        
 	<div style="clear:both"></div>
 		  
-	<div id="tec">
+		<div id="customer">
   <h3>Technician Name:</h3>
   <br />
-		  <input type="text" textarea id="tecName"  placeholder="Your Name" />
+		  <input type="text" textarea id="customer-title"  placeholder="Your Name" />
   
-			  <table id="data">
+			  <table id="meta">
 				  <tr>
-					  <td class="invoiceNum">Invoice #</td>
+					  <td class="meta-head">Invoice #</td>
 					  <td> <textarea id="randomNumber"></textarea></td>
 				  </tr>
 				  <tr>
-					  <td class="theDate">Date</td>
-					  <td><input type="text" textarea id="date"  placeholder="{date}" /></td>
+					  <td class="meta-head">Date</td>
+					  <td><input type="text" textarea id="date"  placeholder={getCurrentDate()} /></td>
 				  </tr>
 				  <tr>
-					  <td class="amountDue">Amount Due</td>
+					  <td class="meta-head">Amount Due</td>
 					  <td><div class="due">$0.00</div></td>
 				  </tr>
 			  </table>
 		</div>
-	  <table id="items"> 
+	  <table width="100%" id="items"> 
 			<tr>
-				<th class="itemName">Item</th>
-				<th class="desc">Description/Material</th>
-				<th class="cost">Cost</th>
-				<th class="hours">Hours</th>
-				<th  class="price">Price</th>
+				<th width="50">Employee</th>
+				<th width="219">Description/Material</th>
+				<th width="46">Cost</th>
+				<th width="46">Hours</th>
+				<th width="46">Price</th>
 			</tr>
 			
 		   <tr class="item-row">
 				<td class="item-name"><div class="delete-wpr">
 				  <textarea oninput="auto_grow(this)" rows="3" id="task" textarea="textarea" placeholder="item/task completed"></textarea>
-			  <!-- <a class="delete" href="javascript:;" title="Remove row">X</a></div></td> -->
+			  <button class="delete" on:click={deleteRow()} title="Remove row">X</button>
+			</div>
+		</td>
 				<td class="description"><textarea oninput="auto_grow(this)" rows="3" id="details" textarea="textarea" placeholder="Details"></textarea></td>
 				<td><input type="text" width="70px" textarea class="cost"  placeholder="$0"  /></td>
 				<td><input type="text" width="70px" textarea class="qty" placeholder="0" /></td>
@@ -79,7 +117,7 @@
 			</tr>
 			
 			<tr id="hiderow">
-			  <!-- <td colspan="5"><a id="addrow" href="javascript:;" title="Add a row"> add a row</a></td> -->
+			  <td colspan="5"><a id="addrow" on:click={addRow()} title="Add a row"> add a row</a></td>
 			</tr>
 			
 			<tr>
@@ -105,10 +143,7 @@
 				<td class="total-value balance"><div class="due">$0.00</div></td>
 			</tr>
 		  
-		  </table>
-		  
-		  
-		  
+		  </table>	  
 		  <div class="sigPad" id="smoothed-variableStrokeWidth" style="width:424px;">
   <h3>Signature</h3>
 			  <input type="text" textarea id="customer-title"  placeholder="Customer Name" />
@@ -124,21 +159,7 @@
   <ul class="sigNav">
   <li class="clearButton"><a href="#clear">Clear</a></li>
   </ul>   
-		  </div>	   
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-  <br>
-		
-		  
-		  
+		  </div>	   	  
 	  <div id="terms">
 		<h5>Notes</h5>
 		<textarea oninput="auto_grow(this)" rows="4" id="notes" textarea="textarea"></textarea>
@@ -155,13 +176,4 @@
   </div>
   </div>
   </div>
-  <br/>
-  <br/>
-  <br/>
-	<h1>Hello {name}!</h1>
-	<p>Visit the <a href="https://svelte.dev/tutorial">Svelte tutorial</a> to learn how to build Svelte apps.</p>
 </main>
-
-<style>
-	
-</style>

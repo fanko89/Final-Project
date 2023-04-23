@@ -1,17 +1,17 @@
 <script>
-  import { each } from 'svelte/internal';
-  import './lib/styles/styles.css';
-  import { onMount } from 'svelte';
+  import { each } from 'svelte/internal'
+  import './lib/styles/styles.css'
+  import { onMount } from 'svelte'
  
-  let yourTotal = 0;
-  let yourAmountDue = 0;
+  let yourTotal = 0
+  let yourAmountDue = 0
 
   function getCurrentDate() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-    return mm + '/' + dd + '/' + yyyy;
+    const today = new Date()
+    const dd = String(today.getDate()).padStart(2, '0')
+    const mm = String(today.getMonth() + 1).padStart(2, '0')
+    const yyyy = today.getFullYear()
+    return mm + '/' + dd + '/' + yyyy
   }
 
   onMount(async() => {
@@ -19,37 +19,37 @@
     document.querySelector('#randomNumber').textContent = randomNumber;
   });
 
-  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}];
+  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
 
   function updatePrice(row) {
-    let price = row.cost * row.qty;
-    row.price = isNaN(price) ? 'N/A' : price.toFixed(2);
+    let price = row.cost * row.qty
+    row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
     updateTotal();
   }
 
   function updateTotal() {
-    let total = rows.reduce((acc, row) => acc + Number(row.price), 0);
-    subtotalElement.innerHTML = '$' + total.toFixed(2);
-    totalElement.innerHTML = '$' + total.toFixed(2);
-    updateBalance();
-    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
+    let total = rows.reduce((acc, row) => acc + Number(row.price), 0)
+    subtotalElement.innerHTML = '$' + total.toFixed(2)
+    totalElement.innerHTML = '$' + total.toFixed(2)
+    updateBalance()
+    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
   }
 
   function updateBalance() {
-    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
-    dueElement.innerHTML = '$' + due.toFixed(2);
+    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
+    dueElement.innerHTML = '$' + due.toFixed(2)
   }
 
   function addRow() {
-    rows = [...rows, {name: '', description: '', cost: 0, qty: 0, price: 0}];
+    rows = [...rows, {name: '', description: '', cost: 0, qty: 0, price: 0}]
   }
 
   function removeRow(index) {
-    if (rows.length > 1) {
-      rows.splice(index, 1);
-      updateTotal();
-    }
+  if (rows.length > index) {
+    rows.splice(index, 1)
+    updateTotal()
   }
+}
 
 
 </script>

@@ -1,7 +1,7 @@
 <script>
   import { each } from 'svelte/internal';
-	import './lib/styles/styles.css';
-	import { onMount } from 'svelte';
+  import './lib/styles/styles.css';
+  import { onMount } from 'svelte';
  
   let yourTotal = 0;
   let yourAmountDue = 0;
@@ -14,46 +14,44 @@
     return mm + '/' + dd + '/' + yyyy;
   }
 
-onMount(async() => {
-	const randomNumber = Math.floor(Math.random() * 1000000000);
-	document.querySelector('#randomNumber').textContent = randomNumber;
-});
+  onMount(async() => {
+    const randomNumber = Math.floor(Math.random() * 1000000000);
+    document.querySelector('#randomNumber').textContent = randomNumber;
+  });
 
- //////////////////////////////////////////////////////////////////////////////////
- let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}];
+  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}];
 
-function updatePrice(row) {
-  let price = row.cost * row.qty;
-  row.price = isNaN(price) ? 'N/A' : price.toFixed(2);
-  updateTotal();
-}
+  function updatePrice(row) {
+    let price = row.cost * row.qty;
+    row.price = isNaN(price) ? 'N/A' : price.toFixed(2);
+    updateTotal();
+  }
 
-function updateTotal() {
-  let total = rows.reduce((acc, row) => acc + Number(row.price), 0);
-  subtotalElement.innerHTML = '$' + total.toFixed(2);
-  totalElement.innerHTML = '$' + total.toFixed(2);
-  updateBalance();
-}
+  function updateTotal() {
+    let total = rows.reduce((acc, row) => acc + Number(row.price), 0);
+    subtotalElement.innerHTML = '$' + total.toFixed(2);
+    totalElement.innerHTML = '$' + total.toFixed(2);
+    updateBalance();
+    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
+  }
+
+  function updateBalance() {
+    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
+    dueElement.innerHTML = '$' + due.toFixed(2);
+  }
+
+  function addRow() {
+    rows = [...rows, {name: '', description: '', cost: 0, qty: 0, price: 0}];
+  }
+
+  function removeRow(index) {
+    if (rows.length > 1) {
+      rows.splice(index, 1);
+      updateTotal();
+    }
+  }
 
 
-function updateBalance() {
-  let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
-  dueElement.innerHTML = '$' + due.toFixed(2);
-}
-
-function addRow() {
-  rows = [...rows, {name: '', description: '', cost: 0, qty: 0, price: 0}];
-}
-
-function removeRow(index) {
-  rows = [...rows.slice(0, index), ...rows.slice(index + 1)];
-  updateTotal();
-}
-
-function printToday() {
-  let today = new Date();
-  return `${today.getMonth()+1}/${today.getDate()}/${today.getFullYear()}`;
-}
 </script>
 
 <main>
@@ -75,7 +73,7 @@ function printToday() {
 		  <input type="text" textarea id="email" placeholder="Email Address" />
 		</div>
 		<div style="clear:both"></div>
-		<div id="customer">
+		<div id="tec">
 		  <h3>Technician Name:</h3>
 		  <br />
 		  <input type="text" textarea id="customer-title" placeholder="Your Name" />
@@ -94,14 +92,14 @@ function printToday() {
 				  </tr>
 				</table>
 			  </div>
-			  <table width="100%" id="items">
+			  <table id="items">
 				<thead>
 				  <tr>
-					<th width="50">Employee</th>
-					<th width="219">Description/Material</th>
-					<th width="46">Cost</th>
-					<th width="46">Quant</th>
-					<th width="46">Price</th>
+					<th id="itemName">Item</th>
+					<th>Description/Material</th>
+					<th>Cost</th>
+					<th>Quant</th>
+					<th>Price</th>
 				  </tr>
 				</thead>
 				<tbody>
@@ -110,21 +108,28 @@ function printToday() {
 						<td class="item-name">
 						  <div class="delete-wpr">
 							<button class="delete" on:click={() => removeRow(i)} title="Remove row">X</button>
-							<input type="text" bind:value={row.name} placeholder="Item"/>
-							<br/>
-							<input type="text" bind:value={row.description} placeholder="Details"/>
-							
-						  </div>
+						</div>
+						<span><input type="text"  id="task" bind:value={row.name} placeholder="Item"/></span>
 						</td>
-						<td><input type="text" bind:value={row.cost} class="cost" placeholder="$0" on:blur={() => updatePrice(row)}/></td>
-						<td><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:blur={() => updatePrice(row)}/></td>
+						<td class="description">
+							<span><input type="text" id="details" bind:value={row.description} placeholder="Details"/></span>
+						</td>
+						
+				
+						<td class="qty"><span><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:change={() => updatePrice(row)}/></span></td>
+						<td class="cost"><span><input type="text" bind:value={row.cost} class="cost" placeholder="$0" on:change={() => updatePrice(row)}/></span></td>
 						<td><span class="price">${row.price}</span></td>
-						<td>
+					
+						
+					</tr>
+					
+						<td colspan="5" class="addrow">
+							
 						  {#if i === rows.length - 1}
 							<button type="button" id="addrow" on:click={addRow}>Add Row</button>
 						  {/if}
 						</td>
-					  </tr>
+				
 					{/each}
 				  </tbody>
 				

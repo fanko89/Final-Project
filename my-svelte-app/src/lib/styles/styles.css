@@ -2,6 +2,13 @@ main {
     width: 1200px;
     margin: 0 auto;
 }
+body { font: 14px/1.4 Georgia, serif; font-family: 'Open Sans', sans-serif; }
+#page-wrap { width: 700px; margin: 0 auto; }
+table { border-collapse: collapse; }
+.element > { text-decoration:none; color:inherit; }
+
+
+/* Invoice Header */
  textarea#header{
     resize: none;
     width:100%;
@@ -22,58 +29,57 @@ main {
 	margin:-1rem 0;
     padding-bottom: 2rem;
 }
-/* customer information */
-#identity {
-     width: 250px; height: 30px; float: right;
-    }
-
-#tec { margin-top: 15px; }
-#tecName { width:300px; font-size: 16px; float: left; }
-
 .logo img{ text-align: right; float: left; position: relative; margin-top: 0px; max-width: 310px; max-height: 148px; overflow: hidden; }
-
-
-
+/* customer information */
+input {background-color: transparent; border: 0px solid;}
+#identity {width: 250px; float: right; text-align: left;}
+#name  { width: 250px; height: 18px; float: right; margin-top: 15px; font-size:14px; }
+#address { width: 250px; height: 18px; float: right; margin-top: 5px; font-size:14px; }
+#region { width: 250px; height: 18px; float: right; margin-top: 1px; font-size:14px;  }
+#phone { width: 250px; height: 18px; float: right; margin-top: 15px; font-size:14px; }
+#email { width: 250px; height: 18px; float: right; margin-top: 5px; font-size:14px; }
 
 /* tec information */
-#data { width: 250px; float: right; }
-td {  text-align: right;  }
-.invoiceNum { text-align: left; background: #eee; font-size: 16px; }
-#randomNumber { width: 180px; height: 2rem; float: right; text-align:right;}
-.theDate { text-align: left; background: #eee; }
-.amountDue { text-align: left; background: #eee; }
+textarea { border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
+#tec {overflow: hidden; margin-top: 15px; }
+#tecName { width:300px; font-size: 16px; float: left; }
 
-#data td textarea { width: 110px; height: 20px; text-align: right; }
-#data td input { width: 180px; height: 20px; text-align: right; }
-#data td input#date { width: 140px;  }
+/* Table global */
+table { border-collapse: collapse; }
+table td, table th { border: 1px solid black; padding: 5px; }
 
-/* invoice price and decription */
+/* Top invoice table*/
+#meta { margin-top: 1px; width: 250px; float: right; }
+#meta td {  text-align: right;  }
+#meta td.meta-head { text-align: left; background: #eee; }
+#meta td textarea { width: 110px; height: 20px; text-align: right; }
+#meta td input { width: 180px; height: 20px; text-align: right; }
+#meta td input#date { width: 140px;  }
+.addrow{width: 100%;}
+
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
-#items tr th.itemName { width: 20%; background: #eee; }
-#items tr th.desc { width: 50%; background: #eee; }
-#items tr th.cost { width: 10%; background: #eee; }
-#items tr th.hours { width: 10%; background: #eee; }
-#items tr th.price { width: 10%; background: #eee; }
+#items th { background: #eee; }
+#items input { width: 80px; height: 50px; }
+#items tr.item-row td { border: 0; vertical-align: top; }
+#items td.description { width: 400px; }
+#items td.description #details {  width: 100%; }
+#items td.item-name { width: 180px; }
+#items td.item-name #task { width: 100%; }
+input #payment { font-size: 16px; float: left; width: 100%; }
 
-#items textarea { width: auto; height: auto; }
+/* bottom invoice table*/
+#items td.total-line { border-right: 0; text-align: right; }
+#items td.total-value { border-left: 0; padding: 10px 0px 10px 10px; }
+#items td.total-value #paid { height: 20px; width:70px; background: none; }
+#items td.balance { background: #eee; }
+#items td.blank { border: 0; }
+#items td.blank h4 {  width:300px; height:10px; }
+#items td.blank  {  width:300px; height:22px; }
+#terms { text-align: center; margin: 20px 0 0 0; }
+#terms h5 { height: 20px; width: 100%; margin: 0; text-align: center;  font: 16px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 3px; border-bottom: thin solid #000; padding-bottom:10px; margin-bottom:10px; }
+#terms input { width: 100%; height:200px; text-align:left;}
 
-textarea#description{	
-	width:100%;
-	display:block;
-	max-width:100%;
-	font:13px Tahoma, cursive;
-	transition:box-shadow 0.5s ease;
-	font-smoothing:subpixel-antialiased;
-	
-	
-}
+input:hover, input:focus, #items td.total-value input:hover, #items td.total-value input:focus, .delete:hover { background-color:#EEFF88; }
 
-textarea#employee {
-	width:100%;
-	
-	display:block;
-	max-width:100%;
-	font:13px Tahoma, cursive;
-	transition:box-shadow 0.5s ease;
-	font-smoothing:subpixel-antialiased;
-}
+.delete-wpr { position: relative; }
+.delete { display: block; color: #000; text-decoration: none; position: absolute; font-weight: bold; padding: 01px 0px 0px 0px; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; }

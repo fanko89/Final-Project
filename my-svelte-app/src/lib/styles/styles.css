@@ -45,7 +45,7 @@ textarea { border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
 #tecName { width:300px; font-size: 16px; float: left; }
 
 /* Table global */
-table { border-collapse: collapse; }
+table td { border-collapse: collapse; }
 table td, table th { border: 1px solid black; padding: 5px; }
 
 /* Top invoice table*/
@@ -55,7 +55,7 @@ table td, table th { border: 1px solid black; padding: 5px; }
 #meta td textarea { width: 110px; height: 20px; text-align: right; }
 #meta td input { width: 180px; height: 20px; text-align: right; }
 #meta td input#date { width: 140px;  }
-.addrow{width: 100%;}
+.addrow{width: 100%; border:#eee;}
 
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
 #items th { background: #eee; }

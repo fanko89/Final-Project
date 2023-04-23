@@ -1,17 +1,17 @@
 <script>
-  import { each } from 'svelte/internal'
-  import './lib/styles/styles.css'
-  import { onMount } from 'svelte'
+  import { each } from 'svelte/internal';
+  import './lib/styles/styles.css';
+  import { onMount } from 'svelte';
  
-  let yourTotal = 0
-  let yourAmountDue = 0
+  let yourTotal = 0;
+  let yourAmountDue = 0;
 
   function getCurrentDate() {
-    const today = new Date()
-    const dd = String(today.getDate()).padStart(2, '0')
-    const mm = String(today.getMonth() + 1).padStart(2, '0')
-    const yyyy = today.getFullYear()
-    return mm + '/' + dd + '/' + yyyy
+    const today = new Date();
+    const dd = String(today.getDate()).padStart(2, '0');
+    const mm = String(today.getMonth() + 1).padStart(2, '0');
+    const yyyy = today.getFullYear();
+    return mm + '/' + dd + '/' + yyyy;
   }
 
   onMount(async() => {
@@ -19,36 +19,35 @@
     document.querySelector('#randomNumber').textContent = randomNumber;
   });
 
-  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
+  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}];
 
   function updatePrice(row) {
-    let price = row.cost * row.qty
-    row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
+    let price = row.cost * row.qty;
+    row.price = isNaN(price) ? 'N/A' : price.toFixed(2);
     updateTotal();
   }
 
   function updateTotal() {
-    let total = rows.reduce((acc, row) => acc + Number(row.price), 0)
-    subtotalElement.innerHTML = '$' + total.toFixed(2)
-    totalElement.innerHTML = '$' + total.toFixed(2)
-    updateBalance()
-    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
+    let total = rows.reduce((acc, row) => acc + Number(row.price), 0);
+    subtotalElement.innerHTML = '$' + total.toFixed(2);
+    totalElement.innerHTML = '$' + total.toFixed(2);
+    updateBalance();
+    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
   }
 
   function updateBalance() {
-    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
-    dueElement.innerHTML = '$' + due.toFixed(2)
+    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
+    dueElement.innerHTML = '$' + due.toFixed(2);
   }
 
   function addRow() {
-    rows = [...rows, {name: '', description: '', cost: 0, qty: 0, price: 0}]
-  }
+  const index = rows.length;
+  rows = [...rows, { index, name: '', description: '', cost: 0, qty: 0, price: 0 }];
+}
 
   function removeRow(index) {
-  if (rows.length > index) {
-    rows.splice(index, 1)
-    updateTotal()
-  }
+  rows = [...rows.slice(0, index), ...rows.slice(index + 1)];
+  updateTotal();
 }
 
 
@@ -103,34 +102,39 @@
 				  </tr>
 				</thead>
 				<tbody>
-					{#each rows as row, i}
-					  <tr class="item-row">
+					{#each rows as row, i (row.index)}
+					<tr class="item-row" key={row.index}>
 						<td class="item-name">
 						  <div class="delete-wpr">
 							<button class="delete" on:click={() => removeRow(i)} title="Remove row">X</button>
 						</div>
-						<span><input type="text"  id="task" bind:value={row.name} placeholder="Item"/></span>
+	
+					
+							<input type="text"  id="task" bind:value={row.name} placeholder="Item"/>
 						</td>
-						<td class="description">
-							<span><input type="text" id="details" bind:value={row.description} placeholder="Details"/></span>
+							<td class="description">
+							<input type="text" id="details" bind:value={row.description} placeholder="Details"/>
 						</td>
 						
 				
-						<td class="qty"><span><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:change={() => updatePrice(row)}/></span></td>
-						<td class="cost"><span><input type="text" bind:value={row.cost} class="cost" placeholder="$0" on:change={() => updatePrice(row)}/></span></td>
+						<td class="qty"><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:change={() => updatePrice(row)}/></td>
+						<td class="cost"><input type="text" bind:value={row.cost} class="cost" placeholder="$0" on:change={() => updatePrice(row)}/></td>
+						
 						<td><span class="price">${row.price}</span></td>
 					
-						
 					</tr>
 					
+				
 						<td colspan="5" class="addrow">
 							
 						  {#if i === rows.length - 1}
 							<button type="button" id="addrow" on:click={addRow}>Add Row</button>
 						  {/if}
+						
 						</td>
+						
+						{/each}
 				
-					{/each}
 				  </tbody>
 				
 				  <tr>

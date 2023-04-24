@@ -15,29 +15,29 @@
   }
 
   onMount(async() => {
-    const randomNumber = Math.floor(Math.random() * 1000000000);
-    document.querySelector('#randomNumber').textContent = randomNumber;
+    const randomNumber = Math.floor(Math.random() * 1000000000)
+    document.querySelector('#randomNumber').textContent = randomNumber
   });
 
-  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}];
+  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
 
   function updatePrice(row) {
     let price = row.cost * row.qty;
-    row.price = isNaN(price) ? 'N/A' : price.toFixed(2);
+    row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
     updateTotal();
   }
 
   function updateTotal() {
-    let total = rows.reduce((acc, row) => acc + Number(row.price), 0);
-    subtotalElement.innerHTML = '$' + total.toFixed(2);
-    totalElement.innerHTML = '$' + total.toFixed(2);
+    let total = rows.reduce((acc, row) => acc + Number(row.price), 0)
+    subtotalElement.innerHTML = '$' + total.toFixed(2)
+    totalElement.innerHTML = '$' + total.toFixed(2)
     updateBalance();
-    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
+    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
   }
 
   function updateBalance() {
-    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''));
-    dueElement.innerHTML = '$' + due.toFixed(2);
+    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
+    dueElement.innerHTML = '$' + due.toFixed(2)
   }
 
   function addRow() {
@@ -46,8 +46,8 @@
 }
 
   function removeRow(index) {
-  rows = [...rows.slice(0, index), ...rows.slice(index + 1)];
-  updateTotal();
+  rows = [...rows.slice(0, index), ...rows.slice(index + 1)]
+  updateTotal()
 }
 
 

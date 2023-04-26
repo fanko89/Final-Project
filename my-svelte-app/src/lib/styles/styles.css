@@ -31,41 +31,41 @@ table { border-collapse: collapse; }
 }
 .logo img{ text-align: right; float: left; position: relative; margin-top: 0px; max-width: 310px; max-height: 148px; overflow: hidden; }
 /* customer information */
-input {background-color: transparent; border: 0px solid;}
+
 #identity {width: 250px; float: right; text-align: left;}
-#name  { width: 250px; height: 18px; float: right; margin-top: 15px; font-size:14px; }
-#address { width: 250px; height: 18px; float: right; margin-top: 5px; font-size:14px; }
-#region { width: 250px; height: 18px; float: right; margin-top: 1px; font-size:14px;  }
-#phone { width: 250px; height: 18px; float: right; margin-top: 15px; font-size:14px; }
-#email { width: 250px; height: 18px; float: right; margin-top: 5px; font-size:14px; }
+#name  {   float: left; margin-top: 15px; font-size:14px; }
+#address {float: left; margin-top: 5px; font-size:14px; }
+#region { float: left; margin-top: 1px; font-size:14px;  }
+#phone { float: left; margin-top: 15px; font-size:14px; }
+#email {  float: left; margin-top: 5px; font-size:14px; }
 
 /* tec information */
-textarea { border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
+
 #tec {overflow: hidden; margin-top: 15px; }
-#tecName { width:300px; font-size: 16px; float: left; }
+#tecName { font-size: 16px; float: left; }
 
 /* Table global */
 table td { border-collapse: collapse; }
 table td, table th { border: 1px solid black; padding: 5px; }
+input {background-color: transparent; border: 0px solid; }
+textarea {  height: auto; min-height: 10px;  border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
+
 
 /* Top invoice table*/
-#meta { margin-top: 1px; width: 250px; float: right; }
+#meta { margin-top: 1px; width: auto; float: right; }
 #meta td {  text-align: right;  }
 #meta td.meta-head { text-align: left; background: #eee; }
-#meta td textarea { width: 110px; height: 20px; text-align: right; }
-#meta td input { width: 180px; height: 20px; text-align: right; }
-#meta td input#date { width: 140px;  }
-.addrow{width: 100%; border:#eee;}
+#meta td input { width: 100%; text-align: right; }
 
+.addrow{width: 100%; background-color: transparent; border: 0px solid;}
 #items { clear: both; width: 100%; margin: 30px 0 0 0; border: 1px solid black; }
+
 #items th { background: #eee; }
-#items input { width: 80px; height: 50px; }
+#items input { text-align: left; }
 #items tr.item-row td { border: 0; vertical-align: top; }
-#items td.description { width: 400px; }
+#items td.description { min-width:400px; }
 #items td.description #details {  width: 100%; }
-#items td.item-name { width: 180px; }
-#items td.item-name #task { width: 100%; }
-input #payment { font-size: 16px; float: left; width: 100%; }
+
 
 /* bottom invoice table*/
 #items td.total-line { border-right: 0; text-align: right; }
@@ -75,11 +75,37 @@ input #payment { font-size: 16px; float: left; width: 100%; }
 #items td.blank { border: 0; }
 #items td.blank h4 {  width:300px; height:10px; }
 #items td.blank  {  width:300px; height:22px; }
-#terms { text-align: center; margin: 20px 0 0 0; }
+#terms { text-align: center; }
 #terms h5 { height: 20px; width: 100%; margin: 0; text-align: center;  font: 16px Helvetica, Sans-Serif; text-decoration: uppercase; letter-spacing: 3px; border-bottom: thin solid #000; padding-bottom:10px; margin-bottom:10px; }
-#terms input { width: 100%; height:200px; text-align:left;}
+#terms input { width: 100%; text-align:left;}
 
-input:hover, input:focus, #items td.total-value input:hover, #items td.total-value input:focus, .delete:hover { background-color:#EEFF88; }
+textarea:hover, input:hover, input:focus, .delete:hover { 
+   
+    background-color:#90d8ff85; 
+}
 
 .delete-wpr { position: relative; }
-.delete { display: block; color: #000; text-decoration: none; position: absolute; font-weight: bold; padding: 01px 0px 0px 0px; top: -6px; left: -22px; font-family: Verdana; font-size: 12px; }
+.delete { 
+    display: block; 
+    color: #ffffff; 
+    text-decoration: none; 
+    position: absolute; 
+    font-weight: bold; 
+    padding: 3px; 
+    top: -6px; left: -22px; 
+    font-family: Verdana; 
+    font-size: 12px; }
+
+button {
+    background-color: #adadad; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+  }

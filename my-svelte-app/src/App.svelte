@@ -1,57 +1,97 @@
 <script>
-  import { each } from 'svelte/internal';
-  import './lib/styles/styles.css';
-  import { onMount } from 'svelte';
- 
-  let yourTotal = 0;
-  let yourAmountDue = 0;
+	import './lib/styles/styles.css';
+	import { onMount } from 'svelte';
+   
+	import html2canvas from 'html2canvas';
 
-  function getCurrentDate() {
-    const today = new Date();
-    const dd = String(today.getDate()).padStart(2, '0');
-    const mm = String(today.getMonth() + 1).padStart(2, '0');
-    const yyyy = today.getFullYear();
-    return mm + '/' + dd + '/' + yyyy;
-  }
+	
 
-  onMount(async() => {
-    const randomNumber = Math.floor(Math.random() * 1000000000)
-    document.querySelector('#randomNumber').textContent = randomNumber
-  });
+	let yourTotal = 0;
+	let yourAmountDue = 0;
+	let inputHeight = 'auto';
+	let paidElement = null;
+  
+	
+	function getPDF() {
+	  html2canvas(document.querySelector("#pdfWrap"), {scrollY: -window.scrollY}).then(function (canvas) {
+		let pdfWidth = 208;
+		let pdfHeight = canvas.height * pdfWidth / canvas.width;
+		
+		const contentDataURL = canvas.toDataURL('image/png')
+		let pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+		pdf.addImage(contentDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight)
+		
+		pdf.autoTable({ html: '#items', startY: pdfHeight - 100 });
+		
+		pdf.save('Invoice.pdf');
+	  });
+	}
+	
 
-  let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
-
-  function updatePrice(row) {
-    let price = row.cost * row.qty;
-    row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
-    updateTotal();
-  }
-
-  function updateTotal() {
-    let total = rows.reduce((acc, row) => acc + Number(row.price), 0)
-    subtotalElement.innerHTML = '$' + total.toFixed(2)
-    totalElement.innerHTML = '$' + total.toFixed(2)
-    updateBalance();
-    yourAmountDue = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
-  }
-
-  function updateBalance() {
-    let due = Number(totalElement.innerHTML.replace('$', '')) - Number(paidElement.value.replace('$', ''))
-    dueElement.innerHTML = '$' + due.toFixed(2)
-  }
-
-  function addRow() {
-  const index = rows.length;
-  rows = [...rows, { index, name: '', description: '', cost: 0, qty: 0, price: 0 }];
-}
-
-  function removeRow(index) {
-  rows = [...rows.slice(0, index), ...rows.slice(index + 1)]
-  updateTotal()
-}
-
-
-</script>
+	
+	function resizeInput() {
+	  const textarea = event.target;
+	  textarea.style.height = 'auto';
+	  textarea.style.height = `${textarea.scrollHeight}px`;
+	  inputHeight = `${textarea.scrollHeight}px`;
+	}
+  
+  
+  
+  
+	
+	function getCurrentDate() {
+	  const today = new Date();
+	  const dd = String(today.getDate()).padStart(2, '0');
+	  const mm = String(today.getMonth() + 1).padStart(2, '0');
+	  const yyyy = today.getFullYear();
+	  return mm + '/' + dd + '/' + yyyy;
+	}
+  
+	onMount(async() => {
+	  const randomNumber = Math.floor(Math.random() * 1000000000)
+	  document.getElementById('randomNumber').textContent = randomNumber
+	  paidElement = document.querySelector('#paid');
+	  updateTotal();
+	});
+	
+	let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
+  
+	function updatePrice(row) {
+	  let price = row.cost * row.qty;
+	  row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
+	  console.log(row.price)
+	  updateTotal();
+	}
+  
+	function updateTotal() {
+	  let total = rows.reduce((acc, row) => acc + Number(row.price), 0)
+	  yourTotal = total;
+	  updateBalance();
+	  if (paidElement) {
+		yourAmountDue = yourTotal - Number(paidElement.value.replace('$', ''))
+	  } else {
+		yourAmountDue = yourTotal;
+	  }
+	}
+  
+	function updateBalance() {
+	  const balanceElement = document.querySelector("#balance");
+	  if (balanceElement) {
+		balanceElement.innerHTML = calculateBalance().toFixed(2);
+	  }
+	}
+  
+	function addRow() {
+	  const index = rows.length;
+	  rows = [...rows, { index, name: '', description: '', cost: 0, qty: 0, price: 0 }];
+	}
+  
+	function removeRow(index) {
+	  rows = rows.filter((row) => row.index !== index);
+	  updateTotal();
+	}
+  </script>
 
 <main>
 	<form class="ui form">
@@ -65,25 +105,28 @@
 		</div>
 		<div id="identity">
 		  <h3>Customers Info:</h3>
-		  <input type="text" textarea id="name" placeholder="Customer Name" />
-		  <input type="text" textarea id="address" placeholder="Street Address" />
-		  <input type="text" textarea id="region" placeholder="City, State Zip" />
-		  <input type="text" textarea id="phone" placeholder="Phone Number" />
-		  <input type="text" textarea id="email" placeholder="Email Address" />
+		
+		
+		  <input type="text" id="name" placeholder="Customer Name" on:input={resizeInput} />
+		  <input type="text" id="address" placeholder="Street Address" on:input={resizeInput} />
+		  <input type="text" id="region" placeholder="City, State Zip" on:input={resizeInput}/>
+		  <input type="text" id="phone" placeholder="Phone Number" on:input={resizeInput} />
+		  <input type="text" id="email" placeholder="Email Address" on:input={resizeInput} />
+	
 		</div>
 		<div style="clear:both"></div>
 		<div id="tec">
 		  <h3>Technician Name:</h3>
 		  <br />
-		  <input type="text" textarea id="customer-title" placeholder="Your Name" />
+		  <input type="text" id="tec-name" placeholder="Your Name"   on:input={resizeInput} />
 		  <table id="meta">
 			<tr>
 			  <td class="meta-head">Invoice #</td>
-			  <td> <textarea id="randomNumber"></textarea></td>
+			  <td> <p id="randomNumber"></p></td>
 			</tr>
 				  <tr>
 					  <td class="meta-head">Date</td>
-					  <td><input type="text" textarea id="date"  placeholder={getCurrentDate()} /></td>
+					  <td><input type="text" id="date"  placeholder={getCurrentDate()} /></td>
 				  </tr>
 				  <tr>
 					<td class="meta-head">Amount Due</td>
@@ -110,10 +153,11 @@
 						</div>
 	
 					
-							<input type="text"  id="task" bind:value={row.name} placeholder="Item"/>
+							<!-- svelte-ignore a11y-no-redundant-roles -->
+							<textarea type="text" class="task"   on:input={resizeInput} bind:value={row.name} placeholder="Item"></textarea>
 						</td>
 							<td class="description">
-							<input type="text" id="details" bind:value={row.description} placeholder="Details"/>
+							<textarea type="text" id="details" bind:value={row.description}  on:input={resizeInput} placeholder="Details"></textarea>
 						</td>
 						
 				
@@ -150,7 +194,7 @@
 				  <tr>
 					<td colspan="2" class="blank"></td>
 					<td colspan="2" class="total-line">Amount Paid</td>
-					<td width="86" class="total-value"><input type="text" textarea id="paid" placeholder="$0.00" /></td>
+					<td width="86" class="total-value"><input type="text" id="paid" placeholder="$0.00"/></td>
 				  </tr>
 				  <tr>
 					<td colspan="2" class="blank">&nbsp;</td>
@@ -159,10 +203,11 @@
 				  </tr>
 		
 		  
-		  </table>	  
+		  </table>
+		   
 		  <div class="sigPad" id="smoothed-variableStrokeWidth" style="width:424px;">
   <h3>Signature</h3>
-			  <input type="text" textarea id="customer-title"  placeholder="Customer Name" />
+			  <input type="text" id="customer-name"  placeholder="Customer Name" />
   <br>    
 		 
   
@@ -188,8 +233,7 @@
   
   <div class="row">
 	  <div class="col-sm-offset-5 col-sm-2 text-center">
-  <div class="btn btn-danger btn-lg" id="create_pdf">Create PDF
-  </div>
+  <button>Create PDF</button>
   </div>
   </div>
 </main>

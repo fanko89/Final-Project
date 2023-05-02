@@ -1,34 +1,46 @@
 <script>
 	import './lib/styles/styles.css';
 	import { onMount } from 'svelte';
-   
+	import jsPDF from 'jspdf';
 	import html2canvas from 'html2canvas';
-
-	
-
+  
 	let yourTotal = 0;
 	let yourAmountDue = 0;
 	let inputHeight = 'auto';
 	let paidElement = null;
   
-	
-	function getPDF() {
-	  html2canvas(document.querySelector("#pdfWrap"), {scrollY: -window.scrollY}).then(function (canvas) {
-		let pdfWidth = 208;
-		let pdfHeight = canvas.height * pdfWidth / canvas.width;
-		
-		const contentDataURL = canvas.toDataURL('image/png')
-		let pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
-		pdf.addImage(contentDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight)
-		
-		pdf.autoTable({ html: '#items', startY: pdfHeight - 100 });
-		
-		pdf.save('Invoice.pdf');
-	  });
-	}
-	
+	let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
+
+
 
 	
+  
+	onMount(async() => {
+	  const randomNumber = Math.floor(Math.random() * 1000000000);
+	  document.getElementById('randomNumber').textContent = randomNumber;
+	  paidElement = document.querySelector('#paid');
+	  updateTotal();
+	});
+  
+	function getPDF() {
+  // Hide any elements with the "hide-on-pdf" class
+  const elementsToHide = document.querySelectorAll('.hide-on-pdf');
+  for (let i = 0; i < elementsToHide.length; i++) {
+    elementsToHide[i].style.display = 'none';
+  }
+
+  html2canvas(document.querySelector("#pdfWrap"), { scrollY: -window.scrollY, scale: 3 }).then(function (canvas) {
+    let pdfWidth = 208;
+    let pdfHeight = canvas.height * pdfWidth / canvas.width;
+
+    const contentDataURL = canvas.toDataURL('image/png');
+    let pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+    pdf.addImage(contentDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight);
+
+    pdf.save('Invoice-' + randomNumber + '.pdf');
+  });
+}
+  
 	function resizeInput() {
 	  const textarea = event.target;
 	  textarea.style.height = 'auto';
@@ -36,10 +48,6 @@
 	  inputHeight = `${textarea.scrollHeight}px`;
 	}
   
-  
-  
-  
-	
 	function getCurrentDate() {
 	  const today = new Date();
 	  const dd = String(today.getDate()).padStart(2, '0');
@@ -48,19 +56,9 @@
 	  return mm + '/' + dd + '/' + yyyy;
 	}
   
-	onMount(async() => {
-	  const randomNumber = Math.floor(Math.random() * 1000000000)
-	  document.getElementById('randomNumber').textContent = randomNumber
-	  paidElement = document.querySelector('#paid');
-	  updateTotal();
-	});
-	
-	let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
-  
 	function updatePrice(row) {
 	  let price = row.cost * row.qty;
 	  row.price = isNaN(price) ? 'N/A' : price.toFixed(2)
-	  console.log(row.price)
 	  updateTotal();
 	}
   
@@ -92,7 +90,7 @@
 	  updateTotal();
 	}
   </script>
-
+  
 <main>
 	<form class="ui form">
 	  <div id="pdfWrap">
@@ -149,7 +147,7 @@
 					<tr class="item-row" key={row.index}>
 						<td class="item-name">
 						  <div class="delete-wpr">
-							<button class="delete" on:click={() => removeRow(i)} title="Remove row">X</button>
+							<button id="delete" class="hide-on-pdf" on:click={() => removeRow(i)} title="Remove row">X</button>
 						</div>
 	
 					
@@ -172,7 +170,7 @@
 						<td colspan="5" class="addrow">
 							
 						  {#if i === rows.length - 1}
-							<button type="button" id="addrow" on:click={addRow}>Add Row</button>
+							<button type="button" id="addrow" class="hide-on-pdf" on:click={addRow}>Add Row</button>
 						  {/if}
 						
 						</td>
@@ -233,7 +231,7 @@
   
   <div class="row">
 	  <div class="col-sm-offset-5 col-sm-2 text-center">
-  <button>Create PDF</button>
+  <button on:click={getPDF}>Create PDF</button>
   </div>
   </div>
 </main>

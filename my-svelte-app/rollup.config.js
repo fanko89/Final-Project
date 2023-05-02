@@ -31,11 +31,12 @@ function serve() {
 
 export default {
 	input: 'src/main.js',
-	output: {
-		sourcemap: true,
-		format: 'iife',
-		name: 'app',
-		file: 'public/build/bundle.js'
+    output: {
+      sourcemap: true,
+      format: 'iife',
+      inlineDynamicImports: true,
+      name: 'app',
+      file: 'public/build/bundle.js'
 	},
 	plugins: [
 		svelte({

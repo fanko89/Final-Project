@@ -7,6 +7,16 @@ body { font: 14px/1.4 Georgia, serif; font-family: 'Open Sans', sans-serif; }
 table { border-collapse: collapse; }
 .element > { text-decoration:none; color:inherit; }
 
+/* hide on print */
+@media print {
+    .add-row,
+    .delete-row {
+      display: none !important;
+    }
+  }
+  .button-to-hide {
+    display: none;
+  }
 
 /* Invoice Header */
  textarea#header{
@@ -85,7 +95,7 @@ textarea:hover, input:hover, input:focus, .delete:hover {
 }
 
 .delete-wpr { position: relative; }
-.delete { 
+#delete { 
     display: block; 
     color: #ffffff; 
     text-decoration: none; 

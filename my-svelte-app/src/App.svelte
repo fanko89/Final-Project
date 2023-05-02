@@ -106,7 +106,7 @@ function saveSignature() {
 <main>
 	<form class="ui form">
 	  <div id="pdfWrap">
-		<textarea id="header">INVOICE</textarea>
+		<textarea id="header">CUSTOMER INVOICE</textarea>
 		<div id="info">
 		  <p><strong>155, UT 84443 | (801) 123 1234 | Fax: (801) 123 1234| website.com | office@website.com</strong></p>
 		</div>

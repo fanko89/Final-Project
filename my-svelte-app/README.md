@@ -1,4 +1,62 @@
-# This repo is no longer maintained. Consider using `npm init vite` and selecting the `svelte` option or — if you want a full-fledged app framework — use [SvelteKit](https://kit.svelte.dev), the official application framework for Svelte.
+# overview of the different sections of my Invoice code:
+---
+
+
+## Dependencies
+---
+
+styles.css: a stylesheet for styling the invoice form
+
+onMount and svelte: libraries used for handling the mounting of the invoice form
+
+jsPDF: a library for creating PDFs
+
+html2canvas: a library for capturing screenshots of HTML elements
+
+SignaturePad: a library for capturing and storing signatures
+
+## Variables
+---
+
+signaturePad: a variable used to store a signature captured by the SignaturePad library
+
+yourTotal: a variable used to store the total cost of the items listed in the invoice
+
+yourAmountDue: a variable used to store the amount due after subtracting any payments made
+
+inputHeight: a variable used to store the height of the input fields in the invoice form
+
+paidElement: a variable used to store the payment element in the invoice form
+
+rows: an array of objects representing the rows in the invoice form, including name, description, cost, quantity, and price
+
+## Functions
+---
+
+clearSignature(): a function used to clear the captured signature
+
+saveSignature(): a function used to save the captured signature
+
+getPDF(): a function used to create a PDF of the invoice form
+
+resizeInput(): a function used to resize the input fields in the invoice form
+
+getCurrentDate(): a function used to get the current date
+
+updatePrice(): a function used to update the price of an item in the invoice form based on its quantity and cost
+
+updateTotal(): a function used to update the total cost of the items in the invoice form
+
+updateBalance(): a function used to update the balance due after subtracting any payments made
+
+addRow(): a function used to add a new row to the invoice form
+
+removeRow(): a function used to remove a row from the invoice form
+
+
+
+
+
 
 ---
 

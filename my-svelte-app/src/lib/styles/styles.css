@@ -106,6 +106,13 @@ textarea:hover, input:hover, input:focus, .delete:hover {
     font-family: Verdana; 
     font-size: 12px; }
 
+    #notes {  width: 100%; height: 100px; }
+    
+    .pdfButton {
+        padding-top: 4rem;
+      text-align: center;
+      }
+
 button {
     background-color: #adadad; /* Green */
     border: none;
@@ -118,4 +125,14 @@ button {
     margin: 4px 2px;
     cursor: pointer;
     border-radius: 5px;
+  }
+  #signature-pad-container {
+    border: 1px solid black;
+    width: 300px; /* adjust the width to match your desired size */
+    height: 150px; /* adjust the height to match your desired size */
+  }
+  
+  #signature-pad {
+    width: 100%;
+    height: 100%;
   }

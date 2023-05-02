@@ -3,6 +3,9 @@
 	import { onMount } from 'svelte';
 	import jsPDF from 'jspdf';
 	import html2canvas from 'html2canvas';
+	import SignaturePad from 'signature_pad';
+
+	let signaturePad;
   
 	let yourTotal = 0;
 	let yourAmountDue = 0;
@@ -12,10 +15,19 @@
 	let rows = [{name: '', description: '', cost: 0, qty: 0, price: 0}]
 
 
+function clearSignature() {
+  signaturePad.clear();
+}
 
+function saveSignature() {
+  const dataURL = signaturePad.toDataURL();
+  console.log(dataURL);
+}
 	
   
 	onMount(async() => {
+		const canvas = document.getElementById('signature-pad');
+  signaturePad = new SignaturePad(canvas);
 	  const randomNumber = Math.floor(Math.random() * 1000000000);
 	  document.getElementById('randomNumber').textContent = randomNumber;
 	  paidElement = document.querySelector('#paid');
@@ -23,23 +35,23 @@
 	});
   
 	function getPDF() {
-  // Hide any elements with the "hide-on-pdf" class
-  const elementsToHide = document.querySelectorAll('.hide-on-pdf');
-  for (let i = 0; i < elementsToHide.length; i++) {
-    elementsToHide[i].style.display = 'none';
+    // Hide any elements with the "hide-on-pdf" class
+    const elementsToHide = document.querySelectorAll('.hide-on-pdf');
+    for (let i = 0; i < elementsToHide.length; i++) {
+      elementsToHide[i].style.display = 'none';
+    }
+
+    html2canvas(document.querySelector('#pdfWrap'), { scrollY: -window.scrollY, scale: 3 }).then(function (canvas) {
+      let pdfWidth = 208;
+      let pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+      const contentDataURL = canvas.toDataURL('image/png');
+      let pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
+      pdf.addImage(contentDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight);
+      const randomNumber = document.getElementById('randomNumber').textContent;
+      pdf.save(`Invoice-${randomNumber}.pdf`);
+    });
   }
-
-  html2canvas(document.querySelector("#pdfWrap"), { scrollY: -window.scrollY, scale: 3 }).then(function (canvas) {
-    let pdfWidth = 208;
-    let pdfHeight = canvas.height * pdfWidth / canvas.width;
-
-    const contentDataURL = canvas.toDataURL('image/png');
-    let pdf = new jsPDF('p', 'mm', [pdfWidth, pdfHeight]);
-    pdf.addImage(contentDataURL, 'PNG', 0, 0, pdfWidth, pdfHeight);
-
-    pdf.save('Invoice-' + randomNumber + '.pdf');
-  });
-}
   
 	function resizeInput() {
 	  const textarea = event.target;
@@ -160,7 +172,7 @@
 						
 				
 						<td class="qty"><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:change={() => updatePrice(row)}/></td>
-						<td class="cost"><input type="text" bind:value={row.cost} class="cost" placeholder="$0" on:change={() => updatePrice(row)}/></td>
+						<td class="cost"><input type="text" bind:value={row.cost} class="cost" placeholder="0" on:change={() => updatePrice(row)}/></td>
 						
 						<td><span class="price">${row.price}</span></td>
 					
@@ -203,7 +215,7 @@
 		  
 		  </table>
 		   
-		  <div class="sigPad" id="smoothed-variableStrokeWidth" style="width:424px;">
+		  <div class="sigPad" id="smoothed-variableStrokeWidth" style="width:524px;">
   <h3>Signature</h3>
 			  <input type="text" id="customer-name"  placeholder="Customer Name" />
   <br>    
@@ -211,13 +223,10 @@
   
   <div class="sig sigWrapper" style="height:auto;">
   <div class="typed"></div>
-  <canvas class="pad" width="420" height="100"></canvas>
+  <canvas id="signature-pad" class="pad" width="520" height="200"></canvas>
   <input type="hidden" name="output-3" class="output">
   </div>
-  
-  <ul class="sigNav">
-  <li class="clearButton"><a href="#clear">Clear</a></li>
-  </ul>   
+  <button id="hide-on-pdf" on:click={clearSignature}>Clear Signature</button>
 		  </div>	   	  
 	  <div id="terms">
 		<h5>Notes</h5>
@@ -230,7 +239,7 @@
   
   
   <div class="row">
-	  <div class="col-sm-offset-5 col-sm-2 text-center">
+	  <div class="pdfButton">
   <button on:click={getPDF}>Create PDF</button>
   </div>
   </div>

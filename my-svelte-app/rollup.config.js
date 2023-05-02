@@ -30,6 +30,10 @@ function serve() {
 }
 
 export default {
+	onwarn: (warning, rollupWarn) => {
+		if (warning.code === "EVAL") return;
+		rollupWarn(warning);
+	  },
 	input: 'src/main.js',
     output: {
       sourcemap: true,

@@ -1,4 +1,4 @@
-# overview of the different sections of the code:
+# overview of the different sections of my Invoice code:
 ---
 
 

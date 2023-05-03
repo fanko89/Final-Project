@@ -18,12 +18,6 @@
 function clearSignature() {
   signaturePad.clear();
 }
-
-function saveSignature() {
-  const dataURL = signaturePad.toDataURL();
-  console.log(dataURL);
-}
-	
   
 	onMount(async() => {
 		const canvas = document.getElementById('signature-pad');
@@ -167,14 +161,14 @@ function saveSignature() {
 							<textarea type="text" class="task"   on:input={resizeInput} bind:value={row.name} placeholder="Item"></textarea>
 						</td>
 							<td class="description">
-							<textarea type="text" id="details" bind:value={row.description}  on:input={resizeInput} placeholder="Details"></textarea>
+							<textarea type="text" class="details" bind:value={row.description}  on:input={resizeInput} placeholder="Details"></textarea>
 						</td>
 						
 				
 						<td class="qty"><input type="text" bind:value={row.qty} class="qty" placeholder="0" on:change={() => updatePrice(row)}/></td>
 						<td class="cost"><input type="text" bind:value={row.cost} class="cost" placeholder="0" on:change={() => updatePrice(row)}/></td>
 						
-						<td><span class="price">${row.price}</span></td>
+						<td class="price"><span class="price">${row.price}</span></td>
 					
 					</tr>
 					
@@ -226,7 +220,7 @@ function saveSignature() {
   <canvas id="signature-pad" class="pad" width="520" height="200"></canvas>
   <input type="hidden" name="output-3" class="output">
   </div>
-  <button id="hide-on-pdf" on:click={clearSignature}>Clear Signature</button>
+  <button class="hide-on-pdf" on:click={clearSignature}>Clear Signature</button>
 		  </div>	   	  
 	  <div id="terms">
 		<h5>Notes</h5>

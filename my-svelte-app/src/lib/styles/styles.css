@@ -3,7 +3,7 @@ main {
     margin: 0 auto;
 }
 body { font: 14px/1.4 Georgia, serif; font-family: 'Open Sans', sans-serif; }
-#page-wrap { width: 700px; margin: 0 auto; }
+#page-wrap { width: 6600px; margin: 0 auto; }
 table { border-collapse: collapse; }
 .element > { text-decoration:none; color:inherit; }
 
@@ -58,7 +58,7 @@ table { border-collapse: collapse; }
 table td { border-collapse: collapse; }
 table td, table th { border: 1px solid black; padding: 5px; }
 input {background-color: transparent; border: 0px solid; }
-textarea {  height: auto; min-height: 10px;  border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
+textarea {  height: auto;  border: 0; font-size: 14px; font-family: 'Open Sans', sans-serif; }
 
 
 /* Top invoice table*/
@@ -73,8 +73,16 @@ textarea {  height: auto; min-height: 10px;  border: 0; font-size: 14px; font-fa
 #items th { background: #eee; }
 #items input { text-align: left; }
 #items tr.item-row td { border: 0; vertical-align: top; }
-#items td.description { min-width:400px; }
-#items td.description #details {  width: 100%; }
+#items td.item-name { width: 12rem; }
+#items td.item-name .task {  width: 99%; }
+#items td.description { width:25rem; }
+#items td.description .details {  width: 99%; }
+#items td.qty { max-width:5rem; }
+#items td.qty .qty { width:100%; }
+#items td.cost { max-width:5rem; }
+#items td.cost .cost { width:100%; }
+
+
 
 
 /* bottom invoice table*/
